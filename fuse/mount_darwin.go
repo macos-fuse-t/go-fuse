@@ -83,6 +83,9 @@ func mount_fuset(bin string, mountPoint string, opts *MountOptions, ready chan<-
 	envs = append(envs, "_FUSE_MONFD=4")
 	envs = append(envs, "_FUSE_COMMVERS=2")
 	cmd.Env = append(os.Environ(), envs...)
+        cmd.SysProcAttr = &syscall.SysProcAttr{
+		Setsid: true,
+	}
 
 	syscall.CloseOnExec(int(local.Fd()))
 	syscall.CloseOnExec(int(local_mon.Fd()))
